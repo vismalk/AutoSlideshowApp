@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mStart_PauseButton = (Button) findViewById(R.id.start_pause_button);
 
 
+
         // パーミッションの許可状態を確認する
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -82,21 +83,13 @@ public class MainActivity extends AppCompatActivity {
         mAdvanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (timer != null) {
-                    mAdvanceButton.setEnabled(false);
-                } else {
-                    mAdvanceButton.setEnabled(true);
                     advance(cursor);
                 }
-            }
         });
 
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (timer != null){
-                    mReturnButton.setEnabled(false);
-                }else {
                     if (cursor.moveToPrevious()) {
                         setImageView(cursor);
                     } else {
@@ -104,13 +97,16 @@ public class MainActivity extends AppCompatActivity {
                         setImageView(cursor);
                     }
                 }
-                }
+
         });
         mStart_PauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (timer == null) {
                     timer = new Timer();
+                    mAdvanceButton.setEnabled(false);
+                    mReturnButton.setEnabled(false);
+                    mStart_PauseButton.setText("停止");
                     timer.schedule(new TimerTask() {
 
                         @Override
@@ -128,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                        timer = null;
                     mAdvanceButton.setEnabled(true);
                     mReturnButton.setEnabled(true);
+                    mStart_PauseButton.setText("再生");
                 }
             }
           });
